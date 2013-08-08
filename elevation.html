@@ -10,7 +10,7 @@
     <script>
 var latitude = 31.222626;
 var longitude = 121.410896;
-function altitude(latitude,longitude){
+function altitude(latitude,longitude, cb){
     var elevator;
     var altitude_value;
 
@@ -30,13 +30,16 @@ function altitude(latitude,longitude){
     elevator.getElevationForLocations(positionalRequest, function(results, status) {
         if (status == google.maps.ElevationStatus.OK) {
             console.log(results[0].elevation);
+            if (cb) cb();
         }
     });
 }
-altitude(latitude, longitude);
         $.each(data.response.docs, function(index, value){
-            console.log(value.name+'=>'+value.latitude+':'+value.longitude)
-            altitude(value.latitude, value.longitude);
+          if (value.latitude && value.longitude) {
+            altitude(value.latitude, value.longitude, function (){
+              console.log(value.name, " ---- ", value.address_extended,  '=>' , value.latitude+':'+value.longitude)
+            });
+          }
         })
     </script>
   </head>
