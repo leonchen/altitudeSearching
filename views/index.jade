@@ -1,18 +1,45 @@
 extends layout
 
 block content
-  h1 Altitude Searching Demo
-  form(id="searchForm", action="/search", method="post")
-    p
-      label Latitude
-      input.lat(name="lat", type="text")
-      label Longitude
-      input.lng(name="lng", type="text")
-      label Altitude
-      input.alt(name="altitude", type="text")
+  div.row
+    form.form-inline(id="searchForm", action="/search", method="post")
+      p
+        label Latitude
+        input.lat.form-control(name="lat", type="text")
+        label Longitude
+        input.lng.form-control(name="lng", type="text")
+        label Elevation
+        input.ele.form-control(name="ele", type="text", readonlyi="true")
+        label Altitude
+        input.alt.form-control(name="alt", type="text")
 
-      input(type="submit", value="Search")
+        input.submitBtn.btn(type="submit", value="Search!")
 
+
+  div.content.row
+    div#entityList.col-lg-4
+      h3
+        span.count 0
+        | Results
+
+      div.listContainer
+        table.table.table-striped.table-hover
+          thead
+            tr
+              th Name
+              th Latitude
+              th Longitude
+              th Address Extended
+          tbody
+            
+    div#map-canvas.col-lg-8
+
+
+  script#liTempl(type="text/x-jquery-tmpl")
+    tr
+      td.name
+      td.lat 
+      td.lng
+      td.addExt
+    
   script(src="/javascripts/app.js")
-
-  div#map-canvas

@@ -1,38 +1,32 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 70px 20px 0px 20px;
 }
 
-a {
-  color: #00B7FF;
-}
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+input.lat, input.lng, input.alt, input.ele {
+  width: 200px;
 }
 
-#map-canvas, #map_canvas {
+label{
+  margin: 0px 10px;
+
+}
+
+#entityList {
+  height: 600px;
+  border
+}
+#map-canvas {
   height: 600px;
 }
-
-@media print {
-  html, body {
-    height: auto;
-  }
-
-  #map-canvas, #map_canvas {
-    height: 650px;
-  }
+.count{
+  color: blue;
+  padding: 0px 10px;
 }
-
-#panel {
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  margin-left: -180px;
-  z-index: 5;
-  background-color: #fff;
-  padding: 5px;
-  border: 1px solid #999;
+.submitBtn{
+  margin-left: 20px;
+}
+.listContainer {
+  width: 100%;
+  height: 600px;
+  overflow: scroll;
 }
