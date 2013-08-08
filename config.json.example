@@ -1,5 +1,6 @@
 {
   "api": {
+    "baseUrl": "http://api.dev.factual.com",
     "key": "",
     "secret": ""
   }
