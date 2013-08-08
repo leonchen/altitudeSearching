@@ -45,13 +45,13 @@ function showEntities(rows) {
 
 function reSort(rows) {
   var ele = parseFloat($ele.val() || 0);
+  var alt = parseFloat($alt.val() || ele);
   rows.forEach(function (r, i) {
     r.altitude = getAltitude(r, ele);
+    r.d = Math.pow(r.altitude-alt, 2) + Math.pow(r["$distance"], 2)
   });
   rows.sort(function (a, b) {
-    var d = Math.pow(a.altitude-ele, 2)+Math.pow(a["$distance"], 2) - Math.pow(b.altitude-ele, 2)+Math.pow(b["$distance"], 2);
-    console.log(d);
-    return d;
+    return a.d - b.d;
   });
   return rows;
 }
@@ -83,6 +83,9 @@ function showList(rows) {
     $l.find(".lat").html(r.latitude);
     $l.find(".lng").html(r.longitude);
     $l.find(".addExt").html(r.address_extended);
+    $l.find(".alt").html(r.altitude);
+    $l.find(".distance").html(r['$distance']);
+    $l.find(".geoDistance").html(r.d);
 
     $list.append($l);
   });

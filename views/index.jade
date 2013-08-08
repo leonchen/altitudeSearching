@@ -17,7 +17,7 @@ block content
 
 
   div.content.row
-    div#entityList.col-lg-4
+    div#entityList.col-lg-6
       h3
         span.count 0
         | Results
@@ -30,9 +30,12 @@ block content
               th Latitude
               th Longitude
               th Address Extended
+              th Altitude
+              th Lat/Lng Distance 
+              th Distance
           tbody
             
-    div#map-canvas.col-lg-8
+    div#map-canvas.col-lg-6
 
 
   script#liTempl(type="text/x-jquery-tmpl")
@@ -41,5 +44,9 @@ block content
       td.lat 
       td.lng
       td.addExt
+      td.alt
+      td.distance
+      td.geoDistance
+    
     
   script(src="/javascripts/app.js")
