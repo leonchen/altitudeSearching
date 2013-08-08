@@ -1,5 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Altitude Searching Demo
+  form(id="searchForm", action="/search", method="post")
+    p
+      label Latitude
+      input.lat(name="lat", type="text")
+      label Longitude
+      input.lng(name="lng", type="text")
+      label Altitude
+      input.alt(name="altitude", type="text")
+
+      input(type="submit", value="Search")
+
+  script(src="/javascripts/app.js")
+
+  div#map-canvas
