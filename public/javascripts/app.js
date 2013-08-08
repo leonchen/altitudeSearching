@@ -9,6 +9,7 @@ var $lat = $("input.lat");
 var $lng = $("input.lng");
 var $ele = $("input.ele");
 var $alt = $("input.alt");
+var $rad = $("input.rad");
 
 var $searchForm = $("#searchForm");
 var $submit = $searchForm.find(".submitBtn");
@@ -46,10 +47,16 @@ function showEntities(rows) {
 function reSort(rows) {
   var ele = parseFloat($ele.val() || 0);
   var alt = parseFloat($alt.val() || ele);
+  var rad = parseFloat($rad.val() || 200);
   rows.forEach(function (r, i) {
     r.altitude = getAltitude(r, ele);
-    r.d = Math.pow(r.altitude-alt, 2) + Math.pow(r["$distance"], 2)
+    r.d = Math.pow(Math.pow(r.altitude-alt, 2) + Math.pow(r["$distance"], 2), 0.5);
   });
+
+  rows = rows.filter(function (r) {
+    return r.d < rad; 
+  });
+
   rows.sort(function (a, b) {
     return a.d - b.d;
   });

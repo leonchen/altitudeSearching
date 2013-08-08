@@ -6,8 +6,9 @@ module.exports = function(app) {
   });
 
   app.all("/search", function (req, res) {
-    point = [req.body.lat, req.body.lng]
-    factual.getData(point, function (err, data) {
+    point = [req.body.lat, req.body.lng];
+    radius = parseInt(req.body.rad);
+    factual.getData(point, radius, function (err, data) {
       res.json(err ? [] : data);
     });
   });

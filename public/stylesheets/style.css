@@ -2,8 +2,8 @@ body {
   padding: 70px 20px 0px 20px;
 }
 
-input.lat, input.lng, input.alt, input.ele {
-  width: 200px;
+input.lat, input.lng, input.alt, input.ele, input.rad {
+  width: 160px;
 }
 
 label{
