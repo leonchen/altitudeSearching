@@ -22,7 +22,7 @@ function initialize() {
         center: denali,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-    var map = new google.maps.Map($('#map-canvas')[0], mapOptions);
+    map = new google.maps.Map($('#map-canvas')[0], mapOptions);
     google.maps.event.addListener(map, 'click', getElevation);
 
     $searchForm.ajaxForm({
