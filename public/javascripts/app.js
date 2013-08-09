@@ -100,11 +100,12 @@ function getAltitude(r, ele) {
 }
 
 function getFloor(s) {
-  if (s.match(/fl\s+(\d+)/i)) {
-    return parseInt(s[1])
+  var m;
+  if (m = s.match(/fl\s+(\d+)/i)) {
+    return parseInt(m[1])
   }
-  if (s.match(/ste\s+(\d+)\d{2}/i)) {
-    return parseInt(s[1]);
+  if (m = s.match(/ste\s+(\d+)\d{2}/i)) {
+    return parseInt(m[1]);
   }
   return null;
 }
