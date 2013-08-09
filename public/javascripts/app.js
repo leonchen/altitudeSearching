@@ -16,8 +16,7 @@ var $submit = $searchForm.find(".submitBtn");
 
 elevator = new google.maps.ElevationService();
 function initialize() {
-    //var denali = new google.maps.LatLng(40.085632, -75.393583);
-    var denali = new google.maps.LatLng(40.08851293345554, -75.38834989070892);
+    var denali = new google.maps.LatLng(34.05226385592875, -118.25880199670792); 
     var mapOptions = {
         zoom: 18,
         center: denali,
@@ -95,12 +94,19 @@ function reSort(rows) {
 var multipler = 4;
 function getAltitude(r, ele) {
   if (!r.address_extended) return ele;
-  var num = r.address_extended.match(/(ste|fl|\#)\s+(\d+)/i);
-  if (num) {
-    if (num[2].length < 3) return ele;
-    return parseInt(num[2].slice(0, -2)) * multipler + ele;
-  }
+  var floor = getFloor(r.address_extended);
+  if (floor) return floor * multipler + ele;
   return ele;
+}
+
+function getFloor(s) {
+  if (s.match(/fl\s+(\d+)/i)) {
+    return parseInt(s[1])
+  }
+  if (s.match(/ste\s+(\d+)\d{2}/i)) {
+    return parseInt(s[1]);
+  }
+  return null;
 }
 
 
