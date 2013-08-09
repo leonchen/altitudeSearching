@@ -16,9 +16,10 @@ var $submit = $searchForm.find(".submitBtn");
 
 elevator = new google.maps.ElevationService();
 function initialize() {
-    var denali = new google.maps.LatLng(40.085632, -75.393583);
+    //var denali = new google.maps.LatLng(40.085632, -75.393583);
+    var denali = new google.maps.LatLng(40.08851293345554, -75.38834989070892);
     var mapOptions = {
-        zoom: 16,
+        zoom: 18,
         center: denali,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }
