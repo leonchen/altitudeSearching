@@ -7,9 +7,12 @@ var markers = [];
 
 var $lat = $("input.lat");
 var $lng = $("input.lng");
+var $ele = $("input.ele");
 var $alt = $("input.alt");
+var $rad = $("input.rad");
 
 var $searchForm = $("#searchForm");
+var $submit = $searchForm.find(".submitBtn");
 
 elevator = new google.maps.ElevationService();
 function initialize() {
@@ -24,32 +27,21 @@ function initialize() {
 
     $searchForm.ajaxForm({
         success: function (response, status) {
-            deleteOverlays();
-               //showEntities(rows);
-            $.each(response,function(index, value){
-                var entityLatlng = new google.maps.LatLng(value.latitude,value.longitude);
-                var contentString = '<p><h2>'+value.name+'</h2><br /><b>Address</b>:'+value.address+
-                    '<br /><b>Tel</b>:'+value.telphone
-                var title = value.name;
-                addMarker(entityLatlng, contentString, title);
-            })
-            setAllMap(map);
+            showEntities(response);
         }
+    });
+
+    $submit.click(function (e) {
+      $submit.addClass("disabled");
     });
 }
 
 // Add a marker to map and push to the array.
-function addMarker(location, contentString, title){
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
+function addMarker(location, title){
     var marker = new google.maps.Marker({
         position: location,
         map: map,
         title: title
-    });
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
     });
     markers.push(marker);
 }
@@ -66,14 +58,82 @@ function clearOverLays(){
     setAllMap(null);
 }
 
-// Shows any overlays currently in the array.
-function showOverlays(){
-    setAllMap(map);
-}
 // Delete all markers in the array by removing references to them.
 function deleteOverlays() {
     clearOverLays();
     markers = [];
+}
+
+function showEntities(rows) {
+  rows = reSort(rows);
+  showCount(rows.length);
+  showList(rows);
+  showMap(rows);
+  $submit.removeClass("disabled");
+}
+
+function reSort(rows) {
+  var ele = parseFloat($ele.val() || 0);
+  var alt = parseFloat($alt.val() || ele);
+  var rad = parseFloat($rad.val() || 200);
+  rows.forEach(function (r, i) {
+    r.altitude = getAltitude(r, ele);
+    r.d = Math.pow(Math.pow(r.altitude-alt, 2) + Math.pow(r["$distance"], 2), 0.5);
+  });
+
+  rows = rows.filter(function (r) {
+    return r.d < rad;
+  });
+
+  rows.sort(function (a, b) {
+    return a.d - b.d;
+  });
+  return rows;
+}
+
+var multipler = 4;
+function getAltitude(r, ele) {
+  if (!r.address_extended) return ele;
+  var num = r.address_extended.match(/(ste|fl|\#)\s+(\d+)/i);
+  if (num) {
+    if (num[2].length < 3) return ele;
+    return parseInt(num[2].slice(0, -2)) * multipler + ele;
+  }
+  return ele;
+}
+
+
+$count = $("#entityList .count");
+function showCount(l) {
+  $count.html(l);
+}
+
+var listTemplate = $("#liTempl").html();
+var $list = $("#entityList tbody");
+function showList(rows) {
+  $list.html('');
+  rows.forEach(function(r, idx) {
+    var $l = $(listTemplate);
+    $l.find(".name").html(r.name);
+    $l.find(".lat").html(r.latitude);
+    $l.find(".lng").html(r.longitude);
+    $l.find(".addExt").html(r.address_extended);
+    $l.find(".alt").html(r.altitude);
+    $l.find(".distance").html(r['$distance']);
+    $l.find(".geoDistance").html(r.d);
+
+    $list.append($l);
+  });
+}
+
+function showMap(rows) {
+    deleteOverlays();
+    $.each(rows,function(index, value){
+        var entityLatlng = new google.maps.LatLng(value.latitude,value.longitude);
+        var title = value.name;
+        addMarker(entityLatlng, title);
+    })
+    setAllMap(map);
 }
 
 function getElevation(event) {
@@ -95,7 +155,7 @@ function getElevation(event) {
     if (status == google.maps.ElevationStatus.OK) {
 
       if (results[0]) {
-        $alt.val(results[0].elevation);
+        $ele.val(results[0].elevation);
         //infowindow.setContent('The elevation at this point <br>is ' + results[0].elevation + ' meters.');
         //infowindow.setPosition(clickedLocation);
         //infowindow.open(map);
