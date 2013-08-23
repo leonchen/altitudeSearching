@@ -150,8 +150,8 @@ function getElevation(event) {
   var point = event.latLng;
 
   var clickedLocation = point;
-  $lat.val(point.lb);
-  $lng.val(point.mb);
+  $lat.val(point.mb);
+  $lng.val(point.nb);
 
   locations.push(clickedLocation);
 
