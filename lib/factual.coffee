@@ -17,7 +17,6 @@ class Factual
         }
       }
       limit: 500
-      BYPASS: 1
     , (error, res) =>
       if error
         console.log error
